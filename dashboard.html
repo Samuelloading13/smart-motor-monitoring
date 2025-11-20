@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Smart Motor Monitoring</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+        .card-container { display: flex; gap: 20px; margin-bottom: 20px; }
+        .card {
+            background: white; padding: 20px; border-radius: 10px;
+            width: 150px; box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; }
+        th { background: #333; color: white; }
+        #statusBox { padding: 15px; background: white; border-radius: 10px; margin-top: 20px; width: 200px; }
+    </style>
+</head>
+<body>
+
+<h2>Smart Motor Monitoring Dashboard</h2>
+
+<div class="card-container">
+    <div class="card"><h3>Suhu</h3><p id="suhu">-</p></div>
+    <div class="card"><h3>Tegangan</h3><p id="tegangan">-</p></div>
+    <div class="card"><h3>RPM</h3><p id="rpm">-</p></div>
+    <div class="card"><h3>Kecepatan</h3><p id="kecepatan">-</p></div>
+</div>
+
+<div id="statusBox">
+    <h3>Status Motor</h3>
+    <p id="status">-</p>
+</div>
+
+<h3>History Sensor</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Suhu</th>
+            <th>Tegangan</th>
+            <th>RPM</th>
+            <th>Kecepatan</th>
+        </tr>
+    </thead>
+    <tbody id="historyTable"></tbody>
+</table>
+
+<script>
+    async function fetchData() {
+        const sensor = await fetch("/api/sensor").then(r => r.json());
+        const status = await fetch("/api/sensor/status").then(r => r.json());
+        const history = await fetch("/api/sensor/history").then(r => r.json());
+
+        document.getElementById("suhu").textContent = sensor.suhu;
+        document.getElementById("tegangan").textContent = sensor.tegangan;
+        document.getElementById("rpm").textContent = sensor.rpm;
+        document.getElementById("kecepatan").textContent = sensor.kecepatan;
+
+        document.getElementById("status").textContent = status.status;
+
+        let tableHTML = "";
+        history.forEach(h => {
+            tableHTML += `<tr>
+                <td>${h.suhu}</td>
+                <td>${h.tegangan}</td>
+                <td>${h.rpm}</td>
+                <td>${h.kecepatan}</td>
+            </tr>`;
+        });
+        document.getElementById("historyTable").innerHTML = tableHTML;
+    }
+
+    setInterval(fetchData, 2000); // update tiap 2 detik
+    fetchData();
+</script>
+
+</body>
+</html>
