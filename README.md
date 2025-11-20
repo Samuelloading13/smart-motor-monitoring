@@ -1,128 +1,147 @@
-📡 Smart Motor Monitoring System
+# Smart Motor Monitoring System
 
-Sistem ini merupakan aplikasi pemantauan motor pintar (Smart Motor) yang dibangun menggunakan Golang (Backend API) dan HTML/JS (Dashboard Web).
-Proyek ini menampilkan data sensor seperti suhu, tegangan, rpm, dan kecepatan dalam bentuk dashboard yang diperbarui secara real-time.
+Smart Motor Monitoring System adalah proyek untuk memantau kondisi motor secara real-time menggunakan **Golang sebagai backend API** dan **HTML/JavaScript sebagai dashboard web**. Sistem ini menerima data sensor (suhu, tegangan, RPM, dan kecepatan), menampilkan status motor, serta menyimpan riwayat pembacaan sensor.
 
-🚀 Fitur Utama
-🟦 API Backend (Golang)
+---
 
-Endpoint POST /api/sensor
-Mengirimkan data sensor baru.
+## ✨ Fitur
 
-Endpoint GET /api/sensor
-Mengambil data sensor terbaru.
+### 🔵 Backend API (Golang)
 
-Endpoint GET /api/sensor/status
-Menentukan status motor berdasarkan nilai sensor.
+* **POST /api/sensor** — menerima data sensor baru
+* **GET /api/sensor** — mengambil data sensor terbaru
+* **GET /api/sensor/status** — menghitung kondisi motor
+* **GET /api/sensor/history** — menampilkan riwayat pembacaan
 
-Endpoint GET /api/sensor/history
-Menampilkan riwayat pembacaan sensor.
+### 🟢 Dashboard Web
 
-🟩 Dashboard Web
+* Menampilkan data sensor terbaru
+* Status motor (*Baik*, *Waspada*, *Bahaya*)
+* Tabel riwayat pembacaan sensor
+* Update otomatis setiap 2 detik
+* Menggunakan HTML + CSS + JavaScript (tanpa framework)
 
-Menampilkan data suhu, tegangan, rpm, dan kecepatan.
+### 🟣 Functional Programming (FP)
 
-Menampilkan status motor (baik, waspada, atau bahaya).
+* Update data menggunakan pure function
+* Tanpa mengubah state secara langsung
+* Data baru selalu dikembalikan melalui return value
 
-Menampilkan history sensor dalam bentuk tabel.
+---
 
-Update otomatis (auto refresh setiap 2 detik).
+## 📂 Struktur Proyek
 
-Menggunakan HTML, CSS, dan JavaScript murni — tanpa framework.
-
-🟧 Filosofi FP (Functional Programming)
-
-Tidak ada data global yang dimodifikasi langsung.
-
-Update sensor menggunakan pure function:
-
-func updateSensorData(old SensorData, new SensorData) SensorData {
-    return newData
-}
-
-
-State hanya berubah melalui return value, bukan pengubahan langsung.
-
-📁 Struktur Folder
+```
 /
-├── main.go               → Backend API
-├── index.html            → Dashboard utama
-├── /history/             → Penyimpanan history (opsional)
+├── main.go
+├── index.html
 └── README.md
+```
 
-▶️ Cara Menjalankan
-1. Clone repo
-git clone https://github.com/<username>/smart-motor-monitoring.git
-cd smart-motor-monitoring
+---
 
-2. Jalankan backend
+## 🚀 Cara Menjalankan
+
+### 1. Clone Repository
+
+```sh
+git clone https://github.com/<username>/<repo-name>.git
+cd <repo-name>
+```
+
+### 2. Jalankan Backend
+
+```sh
 go run main.go
-
+```
 
 Server berjalan di:
 
+```
 http://localhost:8080
+```
 
-3. Buka dashboard
+### 3. Buka Dashboard
 
-Cukup buka:
+Akses:
 
+```
 http://localhost:8080/index.html
+```
 
-📦 Endpoint API
-POST /api/sensor
+---
 
-Kirim data sensor:
+## 📡 Contoh Format Request/Response
 
+### POST `/api/sensor`
+
+Body:
+
+```json
 {
   "suhu": 36.5,
   "tegangan": 12.3,
   "rpm": 4200,
   "kecepatan": 60
 }
+```
 
-GET /api/sensor
+Response:
 
-Ambil data terbaru:
+```json
+{ "status": "Data sensor diterima" }
+```
 
+---
+
+### GET `/api/sensor`
+
+```json
 {
   "suhu": 36.5,
   "tegangan": 12.3,
   "rpm": 4200,
   "kecepatan": 60
 }
+```
 
-GET /api/sensor/status
+---
 
-Contoh respons:
+### GET `/api/sensor/status`
 
+```json
 {
   "status": "Motor dalam kondisi baik"
 }
+```
 
-GET /api/sensor/history
+---
 
-Contoh:
+### GET `/api/sensor/history`
 
+```json
 [
   { "suhu": 36.1, "tegangan": 12.2, "rpm": 4100, "kecepatan": 58 },
   { "suhu": 36.5, "tegangan": 12.3, "rpm": 4200, "kecepatan": 60 }
 ]
+```
 
-🛠 Teknologi yang Digunakan
+---
 
-Go (net/http)
+## 🛠 Teknologi
 
-HTML + CSS + JavaScript
+* Go (net/http)
+* HTML
+* CSS
+* JavaScript
 
-Postman (testing API)
+---
 
-📌 Pengembangan Selanjutnya
+## 📌 Pengembangan Mendatang
 
-Menambahkan grafik real-time (Chart.js)
+* Menambah grafik realtime (Chart.js)
+* Sistem login dan autentikasi
+* Penyimpanan history dengan database (PostgreSQL/SQLite)
+* Integrasi dengan perangkat ESP32/Arduino
 
-Menambah autentikasi user
-
-Menghubungkan dengan sensor nyata melalui ESP32/Arduino
-
-Penyimpanan history menggunakan database (PostgreSQL / SQLite)
+---
