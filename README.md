@@ -148,10 +148,5 @@ Gunakan endpoint ini untuk mengintegrasikan alat lain (seperti Postman atau ESP3
 ```
 
 -----
-
-\<p align="center"\>
-Dibuat dengan ❤️ menggunakan Golang & Functional Programming.
-\</p\>
-
 ```
 ```
