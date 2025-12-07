@@ -1,106 +1,157 @@
-# Smart Motor Monitoring System
+# 🏍️ Smart Motor Monitor Pro
 
-**Smart Motor Monitor** adalah sistem pemantauan kendaraan *real-time* yang dibangun dengan pendekatan **Functional Programming (FP)**. Proyek ini mendemonstrasikan bagaimana Golang dapat digunakan untuk membangun *backend* yang tangguh dan modular tanpa menggunakan *framework* eksternal, dipadukan dengan *frontend* modern yang responsif.
+![Go Version](https://img.shields.io/badge/Go-1.20%2B-00ADD8?style=for-the-badge&logo=go)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
 
----
+**Smart Motor Monitor Pro** adalah sistem pemantauan kondisi kendaraan berbasis IoT (*Internet of Things*) yang dirancang dengan pendekatan **Functional Programming (FP)**.
 
-## ✨ Fitur Utama
-
-### 🧠 Backend (Golang & FP)
-* **Arsitektur Functional Programming**: Menggunakan *Pure Functions*, *First-Class Functions*, dan *Higher-Order Functions* untuk logika bisnis.
-* **Logika Status Komposit**: Mampu mendeteksi berbagai masalah sekaligus (contoh: *"Mesin Overheat + Tegangan Kritis"*) secara dinamis.
-* **Auto-Timestamp & ID**: Setiap data sensor yang masuk otomatis diberi ID unik dan penanda waktu server.
-* **RESTful API**: Mendukung operasi `GET`, `POST`, dan `DELETE`.
-
-### 💻 Dashboard Web (HTML5 + JS)
-* **Monitoring Real-time**: Data diperbarui otomatis setiap 2 detik.
-* **Panel Simulasi Sensor**: Form input bawaan untuk menguji sistem tanpa perangkat keras fisik.
-* **Visualisasi Status**: Indikator warna otomatis (Hijau/Merah) berdasarkan kondisi mesin.
-* **Manajemen Log**: Tabel riwayat lengkap dengan fitur *Reset Log*.
+Proyek ini mendemonstrasikan bagaimana membangun *backend* yang tangguh, modular, dan *stateless* menggunakan Golang, dipadukan dengan *dashboard real-time* yang responsif tanpa ketergantungan pada *framework* frontend yang berat.
 
 ---
 
-## 🛠️ Implementasi Functional Programming
+## 🌟 Fitur Unggulan
 
-Sistem ini bukan hanya sekadar CRUD biasa, tetapi menerapkan konsep FP secara ketat pada `main.go`:
+### 🧠 Backend Cerdas (Golang)
+* **Arsitektur Functional Programming**: Meminimalisir *side-effects* dan mutasi data yang tidak perlu.
+* **Analisis Status Multi-Dimensi**: Mampu mendeteksi komplikasi masalah (misal: *"Mesin Overheat"* **DAN** *"Tegangan Kritis"* secara bersamaan).
+* **Auto-Timestamp & ID Generation**: Otomatisasi metadata untuk setiap paket data yang masuk.
+* **RESTful API Ringan**: endpoint JSON standar untuk integrasi mudah.
 
-1.  **Pure Functions**: Fungsi `updateSensorData` menjamin *immutability* data (data lama tidak diubah, tapi digantikan data baru).
-2.  **First-Class Functions**: Aturan logika status (`checkOverheat`, `checkLowVoltage`) disimpan sebagai variabel fungsi yang independen.
-3.  **Higher-Order Functions**: Fungsi `resolveStatus` menerima kumpulan fungsi aturan lain sebagai argumen untuk menentukan status akhir secara fleksibel.
+### 💻 Dashboard Interaktif
+* **Real-time Monitoring**: Tampilan data diperbarui otomatis setiap 2 detik (Auto-fetch).
+* **Simulator Sensor Bawaan**: Panel input untuk menguji sistem tanpa perlu perangkat keras sensor fisik.
+* **Visualisasi Peringatan Dini**: Indikator warna berubah (Hijau/Merah) sesuai kondisi kesehatan mesin.
+* **Audit Log**: Tabel riwayat data lengkap dengan fitur reset.
+
+---
+
+## 🛠️ Teknologi & Konsep
+
+| Komponen | Teknologi | Deskripsi |
+| :--- | :--- | :--- |
+| **Language** | ![Go](https://img.shields.io/badge/Go-00ADD8?style=flat-square&logo=go&logoColor=white) | Bahasa utama backend server. |
+| **Paradigm** | **Functional Programming** | Pendekatan logika utama (Pure Functions, HOF). |
+| **Frontend** | HTML5, CSS3, ES6+ | Dashboard UI tanpa framework (Vanilla JS). |
+| **Protocol** | HTTP / REST / JSON | Komunikasi data antara Client dan Server. |
+
+---
+
+## 📐 Implementasi Functional Programming
+
+Sistem ini menerapkan prinsip FP secara ketat pada `main.go` untuk logika bisnis yang bersih:
+
+1.  **Pure Functions (`updateSensorData`)**
+    * Memastikan **Immutability**. Data lama tidak diubah di tempat (*in-place*), melainkan digantikan oleh struktur data baru.
+    
+2.  **First-Class Functions (`checkOverheat`, dll)**
+    * Aturan status (seperti batas suhu) disimpan dalam variabel fungsi. Ini membuat logika sangat modular dan mudah diganti.
+
+3.  **Higher-Order Functions (`resolveStatus`)**
+    * Fungsi cerdas yang menerima **kumpulan fungsi lain** sebagai argumen untuk menentukan status akhir secara dinamis.
+
+---
+
+## ⚙️ Logika Deteksi Masalah
+
+Sistem diprogram dengan ambang batas (*threshold*) keamanan sebagai berikut:
+
+| Parameter | Kondisi Aman | Kondisi Bahaya | Output Status |
+| :--- | :--- | :--- | :--- |
+| **🌡️ Suhu** | ≤ 80°C | **> 80°C** | `Mesin Overheat` |
+| **⚡ Tegangan** | ≥ 11.0 V | **< 11.0 V** | `Tegangan Kritis` |
+| **🚀 Kecepatan** | ≤ 100 km/h | **> 100 km/h** | `Kecepatan Berbahaya` |
+
+> 💡 **Info:** Jika lebih dari satu kondisi bahaya terpenuhi, sistem akan menggabungkan statusnya (Contoh: `"Mesin Overheat + Tegangan Kritis"`).
 
 ---
 
 ## 🚀 Cara Menjalankan
 
-### 1. Persiapan
-Pastikan [Go (Golang)](https://go.dev/dl/) sudah terinstall di komputer Anda.
+### 1. Prasyarat
+Pastikan Anda telah menginstal [Go (Golang)](https://go.dev/dl/).
 
-### 2. Jalankan Server
-Buka terminal di folder proyek, lalu ketik:
+### 2. Clone & Run
+Buka terminal pada direktori proyek:
 
+```bash
+# Jalankan server
 go run main.go
-Output terminal akan terlihat seperti ini:
+````
 
+Jika berhasil, terminal akan menampilkan:
+
+```
 Server running at http://localhost:8080
-3. Akses Dashboard
-Buka browser dan kunjungi: 👉 http://localhost:8080/dashboard.html
+```
 
-📡 Dokumentasi API
-Berikut adalah daftar endpoint yang tersedia untuk integrasi:
+### 3\. Buka Dashboard
 
-1. Kirim Data Sensor Baru
-URL: /api/sensor
+Buka browser favorit Anda dan akses:
+👉 **http://localhost:8080/dashboard.html**
 
-Method: POST
+-----
 
-Body (JSON):
+## 📡 Dokumentasi API
 
-JSON
+Gunakan endpoint ini untuk mengintegrasikan alat lain (seperti Postman atau ESP32).
 
-{
-  "suhu": 85.5,
-  "tegangan": 12.1,
-  "rpm": 4000,
-  "kecepatan": 110
-}
-Response: { "msg": "Data updated", "time": "10:30:15" }
+### 1\. 📤 Kirim Data Sensor (POST)
 
-2. Ambil Data Terkini
-URL: /api/sensor
+  * **Endpoint:** `/api/sensor`
+  * **Body (JSON):**
+    ```json
+    {
+      "suhu": 90.5,
+      "tegangan": 10.5,
+      "rpm": 4500,
+      "kecepatan": 60
+    }
+    ```
+  * **Respon Sukses:**
+    ```json
+    { "msg": "Data updated", "time": "14:30:05" }
+    ```
 
-Method: GET
+### 2\. 📥 Ambil Data Terkini (GET)
 
-Response:
+  * **Endpoint:** `/api/sensor`
+  * **Respon:**
+    ```json
+    {
+      "id": 12,
+      "waktu": "14:30:05",
+      "suhu": 90.5,
+      "tegangan": 10.5,
+      "rpm": 4500,
+      "kecepatan": 60
+    }
+    ```
 
-JSON
+### 3\. ⚠️ Cek Status Diagnosa (GET)
 
-{
-  "id": 5,
-  "waktu": "10:30:15",
-  "suhu": 85.5,
-  "tegangan": 12.1,
-  "rpm": 4000,
-  "kecepatan": 110
-}
-3. Cek Status Kesehatan Mesin
-URL: /api/sensor/status
+  * **Endpoint:** `/api/sensor/status`
+  * **Respon (Contoh Komplikasi):**
+    ```json
+    { "status": "Mesin Overheat + Tegangan Kritis" }
+    ```
 
-Method: GET
+-----
 
-Response (Contoh jika ada masalah ganda):
+## 📂 Struktur Direktori
 
-JSON
+```
+/smart-motor-monitoring
+├── 📄 main.go           # Jantung aplikasi (Server & FP Logic)
+├── 📄 dashboard.html    # Antarmuka Pengguna (UI)
+└── 📄 README.md         # Dokumentasi Proyek
+```
 
-{
-  "status": "Mesin Overheat + Kecepatan Berbahaya"
-}
-4. Kelola Riwayat (History)
-Ambil Data: GET /api/sensor/history
+-----
 
-Hapus Data: DELETE /api/sensor/history
+\<p align="center"\>
+Dibuat dengan ❤️ menggunakan Golang & Functional Programming.
+\</p\>
 
-📂 Struktur Proyek
-/
-├── main.go           # Logic Backend (Server, FP Logic, API)
-├── dashboard.html    # Frontend (UI, Fetch API, CSS)
-└── README.md         # Dokumentasi Proyek
+```
+```
